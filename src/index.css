@@ -324,3 +324,38 @@ body {
 .firmas{
   margin-top: 100px;
 }
+
+@media print {
+  
+  *{ color-adjust: exact;  -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body {
+    display: table;
+    table-layout: fixed;
+    padding-top: 2.5cm;
+    padding-bottom: 2.5cm;
+    height: auto;
+    -webkit-print-color-adjust: exact !important; 
+}
+.plan-datos-header th {
+  background-color: white ; 
+  border-top: none;
+  border-bottom: none !important;
+} 
+.plan-pago thead th{
+  background-color: papayawhip; 
+} 
+
+.observaciones{
+ padding-bottom: 50px;
+}
+
+.plan-pagos-table thead th{
+  background-color: papayawhip !important; 
+} 
+
+
+  #btn-print{
+    display: none;
+  }
+}
+

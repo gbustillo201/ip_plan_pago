@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useHistory, useParams } from 'react-router-dom'
 import useAPICall from "../../useAPICall";
 import { GetPlanPago } from "../../services/cuotasApi";
@@ -7,6 +7,7 @@ import { DistribucionCuotas } from "../../components/DistribucionCuotas";
 import { ProyeccionMultas } from "../../components/ProyeccionMultas";
 import QRCode from "qrcode.react";
 import moment from 'moment';
+import { useReactToPrint } from 'react-to-print';
 
 const Header = ({ planId }) => {
 
@@ -112,10 +113,10 @@ const Observaciones = () =>{
         <p >Observación:</p>
         <p className="text-justify">La falta de pago de dos (2) cuotas en los plazos previstos en el presente Convenio de Pago, será causal suficiente para que el Instituto de la Propiedad prosiga su cobro por la vía legal, sin perjuicio de otras acciones administrativas como la publicación del adeudo en la página de la Institución.</p>
         <p className="text-justify">"Además me comprometo a pagar la mora que se encuentra registrada en el sistema y que no se incluyo en el presente plan"</p>
-        <p className="text-center  firmas">Nombre y Firma del Usuario o Representante Legal</p>
-        <div className="d-flex justify-content-between firmas">
-            <p>Nombre y Firma del Oficial de Planes de Pago</p>
-            <p> Nombre y Firma Gerente de Registro Vehicular / Gerente de Centro de Atención</p>
+        <p className="text-center  firmas">Nombre y Firma del Usuario o <br/>Representante Legal</p>
+        <div className="d-flex justify-content-between flex-wrap">
+            <p className="text-lg-left text-center firmas">Nombre y Firma del Oficial <br/> de Planes de Pago</p>
+            <p className="firmas"> Nombre y Firma Gerente de Registro Vehicular o <br/> Gerente de Centro de Atención</p>
 
         </div>
     </div>
@@ -150,10 +151,15 @@ const PlanPagos = () => {
         }
     }
 
+    const componentRef = useRef();
+    
+    const handlePrint = useReactToPrint({
+        content: () => componentRef.current,
+       
+      });
 
     return (
-        <div className="card w-100">
-
+        <div className="card w-100 PrintPlan" ref={componentRef}>
             <Header planId={planId} />
 
 
@@ -162,14 +168,17 @@ const PlanPagos = () => {
                     <div id="subscription">
                         <h1 className="card-title plan-pago-title text-center ">Convenio de Plan de Pago</h1>
 
-
+                        <button id="btn-print" className="btn btn-primary" onClick={handlePrint}>Imprimir Plan de Pago</button>
                         <div className="plan-pago mt-5">
                             <DatosGenerales placa={placa} rtn={rtn} propietario={propietario} solicitanteNombre={solicitanteNombre} solicitanteIdentificacion={solicitanteIdentificacion} />
 
                             <div className="plan-pago-estado-cuenta">
-                                <EstadoCuenta estadoCuenta={estadoCuenta} />
-                                <DistribucionCuotas distribucion={mapDistribucionCuotas(distribucionCuotas)} />
+                                <div className="plan-pagos-table">
+                                <EstadoCuenta estadoCuenta={estadoCuenta} />                              
                                 <ProyeccionMultas proyeccionMultas={proyeccionMultas} />
+                                <DistribucionCuotas distribucion={mapDistribucionCuotas(distribucionCuotas)} />
+                                </div>
+                                
                                 <DatosRecepcion dateLegend={dateLegend(fechaEmision)}/>
                                 <Observaciones/>
                                 
