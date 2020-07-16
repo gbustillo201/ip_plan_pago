@@ -11,7 +11,7 @@ import { useReactToPrint } from 'react-to-print';
 
 const Header = ({ planId, hasError }) => {
 
-    const url = `${process.env.REACT_APP_PLAN}/${planId}`;
+    const url = `${process.env.REACT_APP_PLAN}?planpago=${planId}`;
     const justify = hasError ? 'justify-content-center' : 'justify-content-between'
     return (
         <div className={`d-flex ${justify} p-3`}>
@@ -115,14 +115,14 @@ const DatosRecepcion = ({ dateLegend }) => {
 const Observaciones = () => {
     return <div className="observaciones mt-5">
         <p >Observación:</p>
-        <p className="text-justify">La falta de pago de dos (2) cuotas en los plazos previstos en el presente Convenio de Pago, será causal suficiente para que el Instituto de la Propiedad prosiga su cobro por la vía legal, sin perjuicio de otras acciones administrativas como la publicación del adeudo en la página de la Institución.</p>
+        <p className="text-justify">La falta de pago de dos pagos consecutivos o tres alternos en los plazos previstos en el presente convenio será causal suficiente para la suspensión de los beneficios obtenidos y que el Instituto de la Propiedad prosiga a su cobro por la vía legal sin perjuicio de otras acciones administrativas como la publicación de lo adeudado en la página de la Institución.</p>
         <p className="text-justify">"Además me comprometo a pagar la mora que se encuentra registrada en el sistema y que no se incluyo en el presente plan"</p>
-        <p className="text-center  firmas">Nombre y Firma del Usuario o <br />Representante Legal</p>
+        {/* <p className="text-center  firmas">Nombre y Firma del Usuario o <br />Representante Legal</p>
         <div className="d-flex justify-content-between flex-wrap">
             <p className="text-lg-left text-center firmas">Nombre y Firma del Oficial <br /> de Planes de Pago</p>
             <p className="firmas"> Nombre y Firma Gerente de Registro Vehicular o <br /> Gerente de Centro de Atención</p>
 
-        </div>
+        </div> */}
     </div>
 }
 

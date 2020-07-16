@@ -42,7 +42,7 @@ const Cuotas = ({cuotas, setSelectedCuota}) => {
 
 const ResultModal = ({showModal, handleClose, codigoPlanPago}) => {
     const history = useHistory();
-    const url = `${process.env.REACT_APP_PLAN}/${codigoPlanPago}`;
+    const url = `${process.env.REACT_APP_PLAN}?planpago=${codigoPlanPago}`;
     return (
         <Modal show={showModal} onHide={handleClose}>
 
@@ -66,7 +66,7 @@ const ResultModal = ({showModal, handleClose, codigoPlanPago}) => {
                 <Button variant="secondary" onClick={handleClose}>
                     Cerrar
                 </Button>
-                <Button variant="primary" onClick={() => history.push(`/planpagos/${codigoPlanPago}`)}>
+                <Button variant="primary" onClick={() => history.push(`/?planpago=${codigoPlanPago}`)}>
                     Imprimir Convenio
                 </Button>
             </Modal.Footer>
@@ -133,9 +133,9 @@ const Account = () => {
     }, [resultCuotas]);
 
     useEffect(() => {
-        if (selectedCuota !== 0) {
+       
             startDistribucion({placa, cuotas: selectedCuota});
-        }
+       
     }, [placa, selectedCuota, startDistribucion]);
 
     return (
@@ -176,7 +176,7 @@ const Account = () => {
                         <p className="text-muted mt-3">
                             Seleccione el número de cuotas para su Plan de Pago
                         </p>
-                        <Cuotas cuotas={cuotas} setSelectedCuota={setSelectedCuota}/>
+                        {/* <Cuotas cuotas={cuotas} setSelectedCuota={setSelectedCuota}/> */}
                         <DistribucionCuotas distribucion={resultDistribucion}/>
                         <ProyeccionMultas proyeccionMultas={proyeccionMultas}/>
 
@@ -186,10 +186,10 @@ const Account = () => {
                     </div>
                     <div className="form-actions mt-3">
 
-                        {selectedCuota !== 0 && <Button className="mr-1"  variant="primary" onClick={acceptPlan}>
+                        {selectedCuota === 0 && <Button className="mr-1"  variant="primary" onClick={acceptPlan}>
                             Aceptar Plan de Pago
                         </Button>}
-                        {selectedCuota !== 0 && <Button  variant="secondary"
+                        {selectedCuota === 0 && <Button  variant="secondary"
                                                           onClick={() => history.push("/")}>
                             Rechazar Plan de Pago
                         </Button>}
