@@ -34,7 +34,7 @@ const Subscription = () => {
     const { search } = useLocation();
     const history = useHistory();
     const dispatch = useDispatch();
-    const { placa, planpago } = queryString.parse(search);
+    const { placa, planpago, planpagosmobile } = queryString.parse(search);
 
     const [result, error, start] = useAPICall(fetchClientData);
 
@@ -56,6 +56,9 @@ const Subscription = () => {
 
     if(planpago){
         history.push(`/planpagos/${planpago}`)
+    }
+    if(planpagosmobile){
+        history.push(`/planpagosmobile/${planpagosmobile}`)
     }
 
     return (

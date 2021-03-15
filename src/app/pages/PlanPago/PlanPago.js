@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from 'react';
-import { useHistory, useParams } from 'react-router-dom'
+import React, { useEffect, useRef, useState } from 'react';
+import { useHistory, useParams, useLocation } from 'react-router-dom'
 import useAPICall from "../../useAPICall";
 import { GetPlanPago } from "../../services/cuotasApi";
 import { EstadoCuenta } from "../../components/EstadoCuenta";
@@ -8,21 +8,22 @@ import { ProyeccionMultas } from "../../components/ProyeccionMultas";
 import QRCode from "qrcode.react";
 import moment from 'moment';
 import { useReactToPrint } from 'react-to-print';
+const queryString = require("query-string");
 
 const Header = ({ planId, hasError }) => {
 
     const url = `${process.env.REACT_APP_PLAN}?planpago=${planId}`;
     const justify = hasError ? 'justify-content-center' : 'justify-content-between'
     return (
-        <div className={`d-flex ${justify} p-3`}>
+        <div className={`d-flex flex-wrap ${justify} p-3`}>
             <img
-                className="card-media  d-block"
+                className="card-media  d-block mx-auto"
                 src={process.env.PUBLIC_URL + "/logo IP.png"}
                 alt=""
             />
             {
 
-                !hasError && <div className="d-flex flex-column align-items-center">
+                !hasError && <div className="d-flex flex-column align-items-center mx-auto mt-4">
                     <QRCode className="qr-box" value={url} />
                     <p className="plan-id">Nº {`${planId}`} </p>
                 </div>
@@ -126,12 +127,24 @@ const Observaciones = () => {
     </div>
 }
 
-const PlanPagos = () => {
+const PlanPagos = ({isMobile}) => {
+   
     const { planId } = useParams();
     const history = useHistory();
+    
     if (!planId) {
         history.push("/")
     }
+   
+    
+    
+    const componentRef = useRef();
+
+    const handlePrint = useReactToPrint({
+        content: () => componentRef.current,
+
+    });
+
 
     const [planPagos, error, getPlanPagos] = useAPICall(GetPlanPago)
 
@@ -142,6 +155,13 @@ const PlanPagos = () => {
     useEffect(() => {
         getPlanPagos({ planId })
     }, []);
+
+    useEffect(()=>{
+        if(isMobile && planPagos){
+            handlePrint();
+        }
+
+    }, [isMobile, planPagos])
 
 
     const dateLegend = (planPagoDate) => {
@@ -155,15 +175,12 @@ const PlanPagos = () => {
         }
     }
 
-    const componentRef = useRef();
+    
 
-    const handlePrint = useReactToPrint({
-        content: () => componentRef.current,
-
-    });
+    
 
     return (
-        <div className="card w-100 PrintPlan" ref={componentRef}>
+        <div className={`card w-100 PrintPlan `} ref={componentRef}>
             <Header planId={planId} hasError={error} />
 
 

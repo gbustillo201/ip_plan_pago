@@ -44,6 +44,9 @@ function App() {
                             <Route exact path="/planpagos/:planId">
                                 <PlanPagos/>
                             </Route>
+                            <Route exact path="/planpagosmobile/:planId">
+                                <PlanPagos isMobile/>
+                            </Route>
                         </Switch>
                     </div>
                 </div>

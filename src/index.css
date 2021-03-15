@@ -330,6 +330,10 @@ body {
 
 @media print {
 
+  .hideClass{
+    display: block !important;
+  }
+
   @page{
     margin: 5mm;
   }
@@ -384,4 +388,8 @@ th {
 
 td {
   text-align: center;
+}
+
+.hideClass {
+  display: none;
 }
